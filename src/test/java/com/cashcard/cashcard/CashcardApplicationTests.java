@@ -13,11 +13,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class CashcardApplicationTests {
-	private TestRestTemplate template = new TestRestTemplate();
+
+	@Autowired
+	private TestRestTemplate restTemplate;
 	@Test
 	public void returnCashCardWhenDataIsSaved(){
 		String cashCardUrl = "http://localhost:8080/cashcards/99";
-		ResponseEntity<String> response = template.getForEntity(cashCardUrl, String.class);
+		ResponseEntity<String> response = restTemplate.getForEntity(cashCardUrl, String.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
