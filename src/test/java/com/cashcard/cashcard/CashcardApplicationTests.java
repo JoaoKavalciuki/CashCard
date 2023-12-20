@@ -32,6 +32,15 @@ class CashcardApplicationTests {
 	}
 
 	@Test
+	public void notReturnCashCardWithUnknowId(){
+		String cashCardUrl = "http://localhost:8080/cashcards/1000";
+		ResponseEntity<String> response = restTemplate.getForEntity(cashCardUrl, String.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+		assertThat(response.getBody()).isBlank();
+	}
+
+	@Test
 	void contextLoads() {
 	}
 
