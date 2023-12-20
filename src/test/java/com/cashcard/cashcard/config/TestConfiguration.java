@@ -10,5 +10,5 @@ public class TestConfiguration {
 
     public TestRestTemplate getTestRestTemplate(){
         return new TestRestTemplate();
-    }git
+    }
 }
