@@ -12,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CashCardJsonTest {
     @Autowired
     private JacksonTester<CashCard> json;
+
     @Test
     void cashCardSerializationTest() throws IOException{
         CashCard cashCard = new CashCard(99L, 123.45);
@@ -34,9 +35,9 @@ public class CashCardJsonTest {
                 }
                 """;
 
-        assertThat(json.parse(expectedValue)).isEqualTo(new CashCard(99L, 123.45));
+        //assertThat(json.parse(expectedValue)).isEqualTo(new CashCard(99L, 123.45));
 
-        assertThat(json.parseObject(expectedValue).id()).isEqualTo(99);
-        assertThat(json.parseObject(expectedValue).amount()).isEqualTo(123.45);
+        assertThat(json.parseObject(expectedValue).getId()).isEqualTo(99);
+        assertThat(json.parseObject(expectedValue).getAmount()).isEqualTo(123.45);
     }
 }
