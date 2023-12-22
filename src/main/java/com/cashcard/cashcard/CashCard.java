@@ -1,4 +1,35 @@
 package com.cashcard.cashcard;
 
-public record CashCard(Long id, Double amount) {
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+
+@Entity
+public class CashCard {
+
+   @Id
+   private Long id;
+
+   Double amount;
+
+   public  CashCard(){
+
+   }
+
+   public CashCard(Long id, Double amount){
+       this.id = id;
+       this.amount = amount;
+   }
+
+   public Long getId(){
+       return this.id;
+   }
+
+   public Double getAmount(){
+       return this.amount;
+   }
+
+   public void setAmount(Double amount){
+       this.amount = amount;
+   }
 }
