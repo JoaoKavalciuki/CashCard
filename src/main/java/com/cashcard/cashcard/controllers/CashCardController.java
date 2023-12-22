@@ -1,11 +1,8 @@
 package com.cashcard.cashcard.controllers;
 
 import com.cashcard.cashcard.CashCard;
-<<<<<<< HEAD
 import com.cashcard.cashcard.repositories.CashCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-=======
->>>>>>> db
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
