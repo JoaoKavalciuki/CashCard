@@ -32,6 +32,14 @@ class CashcardApplicationTests {
 	}
 
 	@Test
+	public void createNewCashCard(){
+		CashCard newCashCard = new CashCard(null, 350.00);
+		ResponseEntity<Void> response = restTemplate.postForEntity("http://localhost:8080/cashcards", newCashCard, Void.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+	}
+
+	@Test
 	public void notReturnCashCardWithUnknowId(){
 		String cashCardUrl = "http://localhost:8080/cashcards/1000";
 		ResponseEntity<String> response = restTemplate.getForEntity(cashCardUrl, String.class);
