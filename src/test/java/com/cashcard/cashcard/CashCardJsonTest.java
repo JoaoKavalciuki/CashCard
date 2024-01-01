@@ -24,7 +24,7 @@ public class CashCardJsonTest {
     void dataSetUp(){
         cashCards.add(new CashCard(99L, 300.00));
         cashCards.add(new CashCard(100L, 550.00));
-        cashCards.add(new CashCard(101L, 830.00));
+        cashCards.add(new CashCard(101L, 835.00));
     }
 
 
