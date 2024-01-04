@@ -1,5 +1,6 @@
 package com.cashcard.cashcard;
 
+import com.cashcard.cashcard.dto.RequestCashCardDTO;
 import com.cashcard.cashcard.dto.ResponseCashCardDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import static org.assertj.core.api.Assertions.*;
 @JsonTest
 public class CashCardJsonTest {
     @Autowired
-    private JacksonTester<CashCard> json;
+    private JacksonTester<ResponseCashCardDTO> json;
 
     private ResponseCashCardDTO[] cashCardsArray = {
             new ResponseCashCardDTO(99L, 300.00),
@@ -26,7 +27,7 @@ public class CashCardJsonTest {
 
     @Test
     void cashCardSerializationTest() throws IOException{
-        CashCard cashCard = new CashCard(99L, 123.45);
+        ResponseCashCardDTO cashCard = cashCardsArray[0];
 
         assertThat(json.write(cashCard)).isStrictlyEqualToJson("expected.json");
 
@@ -34,7 +35,7 @@ public class CashCardJsonTest {
         assertThat(json.write(cashCard)).extractingJsonPathNumberValue("@.id").isEqualTo(99);
 
         assertThat(json.write(cashCard)).hasJsonPathNumberValue("@.amount");
-        assertThat(json.write(cashCard)).extractingJsonPathNumberValue("@.amount").isEqualTo(123.45);
+        assertThat(json.write(cashCard)).extractingJsonPathNumberValue("@.amount").isEqualTo(300.00);
     }
 
     @Test
@@ -46,10 +47,10 @@ public class CashCardJsonTest {
                 }
                 """;
 
-        //assertThat(json.parse(expectedValue)).isEqualTo(new CashCard(99L, 123.45));
+        assertThat(json.parse(expectedValue)).isEqualTo(new ResponseCashCardDTO(99L, 123.45));
 
-        assertThat(json.parseObject(expectedValue).getId()).isEqualTo(99);
-        assertThat(json.parseObject(expectedValue).getAmount()).isEqualTo(123.45);
+        assertThat(json.parseObject(expectedValue).id()).isEqualTo(99);
+        assertThat(json.parseObject(expectedValue).amount()).isEqualTo(123.45);
     }
 
     @Test
