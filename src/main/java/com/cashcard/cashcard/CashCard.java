@@ -1,6 +1,6 @@
 package com.cashcard.cashcard;
 
-import com.cashcard.cashcard.dto.CashCardDTO;
+
 import com.cashcard.cashcard.dto.RequestCashCardDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
