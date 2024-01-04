@@ -18,7 +18,7 @@ public class CashCardJsonTest {
     private CashCardEntityDTO[] cashCardsArray = {
             new CashCardEntityDTO(99L, 300.00),
             new CashCardEntityDTO(100L, 550.00),
-            new CashCardEntityDTO(101L, 800.00)
+            new CashCardEntityDTO(101L, 835.00)
     };
 
     @Autowired
