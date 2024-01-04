@@ -18,6 +18,8 @@ class CashcardApplicationTests {
 
 	@Autowired
 	private TestRestTemplate restTemplate;
+
+	private static String CASH_CARDS_URL = "http://localhost:8080/cashcards";
 	@Test
 	public void returnCashCardWhenDataIsSaved(){
 		String cashCardUrl = "http://localhost:8080/cashcards/99";
@@ -36,7 +38,7 @@ class CashcardApplicationTests {
 	@Test
 	public void createNewCashCard(){
 		CashCard newCashCard = new CashCard(null, 350.00);
-		ResponseEntity<Void> response = restTemplate.postForEntity("http://localhost:8080/cashcards", newCashCard, Void.class);
+		ResponseEntity<Void> response = restTemplate.postForEntity(CASH_CARDS_URL, newCashCard, Void.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
 		URI newCashCardLocation = response.getHeaders().getLocation();
@@ -61,6 +63,13 @@ class CashcardApplicationTests {
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 		assertThat(response.getBody()).isBlank();
+	}
+
+	@Test
+	void returnCashCardsList(){
+		ResponseEntity<Void> response = restTemplate.getForEntity(CASH_CARDS_URL, Void.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
 	@Test
