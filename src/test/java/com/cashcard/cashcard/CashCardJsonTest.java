@@ -1,32 +1,28 @@
 package com.cashcard.cashcard;
 
-import org.junit.jupiter.api.BeforeEach;
+import com.cashcard.cashcard.dto.CashCardEntityDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.json.JacksonTester;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
+
 @JsonTest
 public class CashCardJsonTest {
     @Autowired
     private JacksonTester<CashCard> json;
 
-    private ArrayList<CashCard> cashCards = new ArrayList<>();
+    private CashCardEntityDTO[] cashCardsArray = {
+            new CashCardEntityDTO(99L, 300.00),
+            new CashCardEntityDTO(100L, 550.00),
+            new CashCardEntityDTO(101L, 800.00)
+    };
 
     @Autowired
-    private JacksonTester<ArrayList<CashCard>> jsonList;
-
-    @BeforeEach
-    void dataSetUp(){
-        cashCards.add(new CashCard(99L, 300.00));
-        cashCards.add(new CashCard(100L, 550.00));
-        cashCards.add(new CashCard(101L, 835.00));
-    }
-
+    private JacksonTester<CashCardEntityDTO[]> jsonList;
 
     @Test
     void cashCardSerializationTest() throws IOException{
@@ -58,6 +54,28 @@ public class CashCardJsonTest {
 
     @Test
     void cashCardListSerialization() throws IOException {
-        assertThat(jsonList.write(cashCards)).isStrictlyEqualToJson("list.json");
+        assertThat(jsonList.write(cashCardsArray)).isStrictlyEqualToJson("list.json");
+    }
+
+    @Test
+    void cashCardListDeserialization() throws IOException {
+        String expectedValues = """
+                [
+                  {
+                    "id": 99,
+                    "amount": 300.00
+                  },
+                  {
+                    "id": 100,
+                    "amount": 550.00
+                  },
+                  {
+                    "id": 101,
+                    "amount": 835.00
+                  }
+                ]
+                """;
+
+        assertThat(jsonList.parseObject(expectedValues)).isEqualTo(cashCardsArray);
     }
 }
