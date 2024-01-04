@@ -1,6 +1,7 @@
 package com.cashcard.cashcard;
 
 import com.cashcard.cashcard.dto.CashCardDTO;
+import com.cashcard.cashcard.dto.RequestCashCardDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,7 +26,7 @@ public class CashCard {
        this.amount = amount;
    }
 
-   public CashCard(CashCardDTO cashCardDTO){
+   public CashCard(RequestCashCardDTO cashCardDTO){
        this.amount = cashCardDTO.amount();
    }
 
