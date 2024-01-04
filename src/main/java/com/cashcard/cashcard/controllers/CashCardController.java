@@ -3,6 +3,7 @@ package com.cashcard.cashcard.controllers;
 import com.cashcard.cashcard.CashCard;
 
 import com.cashcard.cashcard.dto.RequestCashCardDTO;
+import com.cashcard.cashcard.dto.ResponseCashCardDTO;
 import com.cashcard.cashcard.repositories.CashCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -31,6 +33,15 @@ public class CashCardController {
         URI newCashCardLocation = ucb.path("/cashcards/{id}").buildAndExpand(savedCashCard.getId()).toUri();
 
         return  ResponseEntity.created(newCashCardLocation).build();
+    }
+    @GetMapping
+    public ResponseEntity<List<ResponseCashCardDTO>> findAll(){
+        var results = repository.findAll();
+
+        List<ResponseCashCardDTO> cashCardsList = results.stream().map(cashCard ->
+                new ResponseCashCardDTO(cashCard.getId(), cashCard.getAmount())).toList();
+
+        return ResponseEntity.ok(cashCardsList);
     }
 
     @GetMapping("/{id}")
