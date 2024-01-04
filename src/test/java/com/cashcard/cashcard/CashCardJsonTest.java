@@ -1,6 +1,6 @@
 package com.cashcard.cashcard;
 
-import com.cashcard.cashcard.dto.CashCardEntityDTO;
+import com.cashcard.cashcard.dto.ResponseCashCardDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
@@ -15,14 +15,14 @@ public class CashCardJsonTest {
     @Autowired
     private JacksonTester<CashCard> json;
 
-    private CashCardEntityDTO[] cashCardsArray = {
-            new CashCardEntityDTO(99L, 300.00),
-            new CashCardEntityDTO(100L, 550.00),
-            new CashCardEntityDTO(101L, 835.00)
+    private ResponseCashCardDTO[] cashCardsArray = {
+            new ResponseCashCardDTO(99L, 300.00),
+            new ResponseCashCardDTO(100L, 550.00),
+            new ResponseCashCardDTO(101L, 835.00)
     };
 
     @Autowired
-    private JacksonTester<CashCardEntityDTO[]> jsonList;
+    private JacksonTester<ResponseCashCardDTO[]> jsonList;
 
     @Test
     void cashCardSerializationTest() throws IOException{
