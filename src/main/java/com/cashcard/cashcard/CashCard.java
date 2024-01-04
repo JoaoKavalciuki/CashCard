@@ -1,6 +1,9 @@
 package com.cashcard.cashcard;
 
+import com.cashcard.cashcard.dto.CashCardDTO;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 
@@ -8,6 +11,7 @@ import jakarta.persistence.Id;
 public class CashCard {
 
    @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
    Double amount;
@@ -19,6 +23,10 @@ public class CashCard {
    public CashCard(Long id, Double amount){
        this.id = id;
        this.amount = amount;
+   }
+
+   public CashCard(CashCardDTO cashCardDTO){
+       this.amount = cashCardDTO.amount();
    }
 
    public Long getId(){
