@@ -97,6 +97,21 @@ class CashcardApplicationTests {
 	}
 
 	@Test
+	public void returnASortedPageOfCashCards(){
+		String url = CASH_CARDS_URL + "?page=0&size=1&sort=amount,desc";
+		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext documentContext = JsonPath.parse(response.getBody());
+		JSONArray pageResult = documentContext.read("$[*]");
+		assertThat(pageResult.size()).isEqualTo(1);
+
+		Double amount = documentContext.read("$[0].amount");
+
+		assertThat(amount).isEqualTo(300.00);
+	}
+
+	@Test
 	void contextLoads() {
 	}
 
