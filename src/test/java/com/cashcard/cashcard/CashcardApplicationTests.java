@@ -98,7 +98,7 @@ class CashcardApplicationTests {
 
 	@Test
 	public void returnASortedPageOfCashCards(){
-		String url = CASH_CARDS_URL + "?page=0&size=1&sort=amount,desc";
+		String url = CASH_CARDS_URL + "?page=0&size=1&sort=amount,asc";
 		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
