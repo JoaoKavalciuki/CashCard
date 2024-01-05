@@ -5,7 +5,12 @@ import com.cashcard.cashcard.CashCard;
 import com.cashcard.cashcard.dto.RequestCashCardDTO;
 import com.cashcard.cashcard.dto.ResponseCashCardDTO;
 import com.cashcard.cashcard.repositories.CashCardRepository;
+import jakarta.persistence.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.spel.spi.Function;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -35,8 +40,10 @@ public class CashCardController {
         return  ResponseEntity.created(newCashCardLocation).build();
     }
     @GetMapping
-    public ResponseEntity<List<ResponseCashCardDTO>> findAll(){
-        var results = repository.findAll();
+    public ResponseEntity<List<ResponseCashCardDTO>> findAll(Pageable pageable){
+
+        var results = repository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()));
+
 
         List<ResponseCashCardDTO> cashCardsList = results.stream().map(cashCard ->
                 new ResponseCashCardDTO(cashCard.getId(), cashCard.getAmount())).toList();
