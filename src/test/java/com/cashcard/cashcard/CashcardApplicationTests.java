@@ -86,6 +86,17 @@ class CashcardApplicationTests {
 	}
 
 	@Test
+	public void returnAPageWithOneCashCard(){
+		ResponseEntity<String> response = restTemplate.getForEntity(CASH_CARDS_URL + "?page=0&size=1", String.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext documentContext = JsonPath.parse(response.getBody());
+		JSONArray pageResult = documentContext.read("$[*]");
+		assertThat(pageResult.size()).isEqualTo(1);
+
+	}
+
+	@Test
 	void contextLoads() {
 	}
 
