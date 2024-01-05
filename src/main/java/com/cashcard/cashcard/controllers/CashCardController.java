@@ -42,7 +42,7 @@ public class CashCardController {
     @GetMapping
     public ResponseEntity<List<ResponseCashCardDTO>> findAll(Pageable pageable){
 
-        var results = repository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()));
+        var results = repository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort()));
 
 
         List<ResponseCashCardDTO> cashCardsList = results.stream().map(cashCard ->
