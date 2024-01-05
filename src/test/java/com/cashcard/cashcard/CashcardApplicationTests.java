@@ -112,6 +112,22 @@ class CashcardApplicationTests {
 	}
 
 	@Test
+	void returnSortedPageUsingDefaultValues(){
+		ResponseEntity<String> response = restTemplate.getForEntity(CASH_CARDS_URL, String.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext documentContext = JsonPath.parse(response.getBody());
+
+		JSONArray page = documentContext.read("$[*]");
+
+		assertThat(page.size()).isEqualTo(3);
+
+		JSONArray amounts = documentContext.read("$..amount");
+
+		assertThat(amounts).containsExactly(835.00, 550.00, 300.00);
+	}
+
+	@Test
 	void contextLoads() {
 	}
 
