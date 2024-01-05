@@ -82,7 +82,7 @@ class CashcardApplicationTests {
 
 		JSONArray amounts = documentContext.read("$..amount");
 
-		assertThat(amounts).containsExactlyInAnyOrder(300.00, 510.00, 835.00);
+		assertThat(amounts).containsExactlyInAnyOrder(300.00, 550.00, 835.00);
 	}
 
 	@Test
