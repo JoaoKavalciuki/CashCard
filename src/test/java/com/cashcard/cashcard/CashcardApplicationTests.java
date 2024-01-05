@@ -2,6 +2,7 @@ package com.cashcard.cashcard;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import net.minidev.json.JSONArray;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +20,7 @@ class CashcardApplicationTests {
 	@Autowired
 	private TestRestTemplate restTemplate;
 
-	private static String CASH_CARDS_URL = "http://localhost:8080/cashcards";
+	final private static String CASH_CARDS_URL = "http://localhost:8080/cashcards";
 	@Test
 	public void returnCashCardWhenDataIsSaved(){
 		String cashCardUrl = "http://localhost:8080/cashcards/99";
@@ -67,9 +68,21 @@ class CashcardApplicationTests {
 
 	@Test
 	void returnCashCardsList(){
-		ResponseEntity<Void> response = restTemplate.getForEntity(CASH_CARDS_URL, Void.class);
+		ResponseEntity<String> response = restTemplate.getForEntity(CASH_CARDS_URL, String.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext documentContext = JsonPath.parse(response.getBody());
+
+		Integer cashCardsQuantity = documentContext.read("$.length()");
+		assertThat(cashCardsQuantity).isEqualTo(3);
+
+		JSONArray ids = documentContext.read("$..id");
+		assertThat(ids).containsExactlyInAnyOrder(99, 100, 101);
+
+		JSONArray amounts = documentContext.read("$..amount");
+
+		assertThat(amounts).containsExactlyInAnyOrder(300.00, 510.00, 835.00);
 	}
 
 	@Test
