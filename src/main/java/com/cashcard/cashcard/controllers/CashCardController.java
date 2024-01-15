@@ -52,7 +52,7 @@ public class CashCardController {
 
 
         List<ResponseCashCardDTO> cashCardsList = results.stream().map(cashCard ->
-                new ResponseCashCardDTO(cashCard.getId(), cashCard.getAmount())).toList();
+                new ResponseCashCardDTO(cashCard.getId(), cashCard.getAmount(), cashCard.getOwner())).toList();
 
         return ResponseEntity.ok(cashCardsList);
     }
