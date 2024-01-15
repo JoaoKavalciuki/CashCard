@@ -31,6 +31,7 @@ public class CashCard {
 
    public CashCard(RequestCashCardDTO cashCardDTO){
        this.amount = cashCardDTO.amount();
+       this.owner = cashCardDTO.owner();
    }
 
    public Long getId(){
@@ -39,6 +40,10 @@ public class CashCard {
 
    public Double getAmount(){
        return this.amount;
+   }
+
+   public String getOwner(){
+       return this.owner;
    }
 
    public void setAmount(Double amount){
