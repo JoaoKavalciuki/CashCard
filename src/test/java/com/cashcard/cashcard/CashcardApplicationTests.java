@@ -31,14 +31,16 @@ class CashcardApplicationTests {
 		DocumentContext documentContext = JsonPath.parse(response.getBody());
 		Number id = documentContext.read("$.id");
 		Number amount = documentContext.read("$.amount");
+		String owner = documentContext.read("$.owner");
 
 		assertThat(id).isEqualTo(99);
 		assertThat(amount).isNotEqualTo(300);
+		assertThat(owner).isEqualTo("Jason");
 	}
 
 	@Test
 	public void createNewCashCard(){
-		CashCard newCashCard = new CashCard(null, 350.00);
+		CashCard newCashCard = new CashCard(null, 350.00, "Jason");
 		ResponseEntity<Void> response = restTemplate.postForEntity(CASH_CARDS_URL, newCashCard, Void.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
@@ -51,9 +53,11 @@ class CashcardApplicationTests {
 
 		Number id = documentContext.read("@.id");
 		Number amount = documentContext.read("@.amount");
+		String owner = documentContext.read("@.owner");
 
 		assertThat(id).isNotNull();
 		assertThat(amount).isEqualTo(350.00);
+		assertThat(owner).isEqualTo("Jason");
 
 	}
 

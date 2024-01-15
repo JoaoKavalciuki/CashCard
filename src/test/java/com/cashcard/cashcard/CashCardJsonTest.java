@@ -17,9 +17,9 @@ public class CashCardJsonTest {
     private JacksonTester<ResponseCashCardDTO> json;
 
     private ResponseCashCardDTO[] cashCardsArray = {
-            new ResponseCashCardDTO(99L, 300.00),
-            new ResponseCashCardDTO(100L, 550.00),
-            new ResponseCashCardDTO(101L, 835.00)
+            new ResponseCashCardDTO(99L, 300.00, "Jason"),
+            new ResponseCashCardDTO(100L, 550.00, "Jason"),
+            new ResponseCashCardDTO(101L, 835.00, "Jason")
     };
 
     @Autowired
@@ -43,11 +43,12 @@ public class CashCardJsonTest {
         String expectedValue = """
                 {
                     "id": 99,
-                    "amount": 123.45
+                    "amount": 123.45,
+                    "owner": "Jason"
                 }
                 """;
 
-        assertThat(json.parse(expectedValue)).isEqualTo(new ResponseCashCardDTO(99L, 123.45));
+        assertThat(json.parse(expectedValue)).isEqualTo(new ResponseCashCardDTO(99L, 123.45, "Jason"));
 
         assertThat(json.parseObject(expectedValue).id()).isEqualTo(99);
         assertThat(json.parseObject(expectedValue).amount()).isEqualTo(123.45);
@@ -64,15 +65,18 @@ public class CashCardJsonTest {
                 [
                   {
                     "id": 99,
-                    "amount": 300.00
+                    "amount": 300.00,
+                    "owner": "Jason"
                   },
                   {
                     "id": 100,
-                    "amount": 550.00
+                    "amount": 550.00,
+                    "owner": "Jason"
                   },
                   {
                     "id": 101,
-                    "amount": 835.00
+                    "amount": 835.00,
+                    "owner": "Jason"
                   }
                 ]
                 """;
