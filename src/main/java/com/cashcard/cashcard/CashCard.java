@@ -17,13 +17,16 @@ public class CashCard {
 
    Double amount;
 
+   String owner;
+
    public  CashCard(){
 
    }
 
-   public CashCard(Long id, Double amount){
+   public CashCard(Long id, Double amount, String owner){
        this.id = id;
        this.amount = amount;
+       this.owner = owner;
    }
 
    public CashCard(RequestCashCardDTO cashCardDTO){
