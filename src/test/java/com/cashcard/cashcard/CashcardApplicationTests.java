@@ -47,8 +47,8 @@ class CashcardApplicationTests {
 		assertThat(owner).isEqualTo("Jason");
 	}
 
-	//Not working onm this project, but passed on the lab
-	/*@Test
+
+	@Test
 	@DirtiesContext
 	public void createNewCashCard(){
 		CashCard newCashCard = new CashCard(null, 350.00, "Jason");
@@ -61,7 +61,9 @@ class CashcardApplicationTests {
 
 		URI newCashCardLocation = response.getHeaders().getLocation();
 
-		ResponseEntity<String> getResponse = restTemplate.getForEntity(newCashCardLocation, String.class);
+		ResponseEntity<String> getResponse = restTemplate
+				.withBasicAuth("Jason", "12345")
+				.getForEntity(newCashCardLocation, String.class);
 		assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
 		DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
@@ -74,7 +76,7 @@ class CashcardApplicationTests {
 		assertThat(amount).isEqualTo(350.00);
 		assertThat(owner).isEqualTo("Jason");
 
-	}*/
+	}
 
 	@Test
 	public void notReturnCashCardWithBadCredentials(){
