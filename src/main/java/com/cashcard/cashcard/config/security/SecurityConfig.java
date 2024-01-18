@@ -26,7 +26,8 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(mvcRequestBuilder.pattern("/cashcards/**"))
-                        .authenticated())
+                        .hasRole("CARD-OWNER")
+                        )
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
