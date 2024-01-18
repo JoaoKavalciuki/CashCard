@@ -37,13 +37,18 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService testsUsers(PasswordEncoder encoder){
+    public UserDetailsService testsUsers(){
         User.UserBuilder users = User.builder();
         UserDetails jason = users
                 .username("Jason")
-                .password(encoder.encode("12345"))
-     gi       .roles()
+                .password(passwordEncoder().encode("12345"))
+                .roles("CARD-OWNER")
                 .build();
-        return new InMemoryUserDetailsManager(jason);
+
+        UserDetails jose = users
+                .username("José")
+                .password(passwordEncoder().encode("RBAC"))
+                .roles("NON-CARD-OWNER").build();
+        return new InMemoryUserDetailsManager(jason, jose);
     }
 }
