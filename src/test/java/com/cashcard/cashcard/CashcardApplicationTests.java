@@ -171,6 +171,15 @@ class CashcardApplicationTests {
 		assertThat(amounts).containsExactly(835.00, 550.00, 300.00);
 	}
 
+
+	@Test
+	public void rejectUserWithWrongRole(){
+		ResponseEntity<String> response = restTemplate
+				.withBasicAuth("José", "RBAC")
+				.getForEntity(CASH_CARDS_URL, String.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+	}
 	@Test
 	void contextLoads() {
 	}
