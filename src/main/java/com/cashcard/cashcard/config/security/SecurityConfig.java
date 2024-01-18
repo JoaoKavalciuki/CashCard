@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,16 +12,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+
+import javax.swing.*;
 
 @Configuration
 public class SecurityConfig {
-
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
+        MvcRequestMatcher.Builder mvcRequestBuilder = new MvcRequestMatcher.Builder(introspector);
+        http.csrf(AbstractHttpConfigurer::disable);
         return http
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/cashcards/**")
+                        .requestMatchers(mvcRequestBuilder.pattern("/cashcards/**"))
                         .authenticated())
-                .csrf(csrf -> csrf.disable())
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
@@ -36,7 +42,7 @@ public class SecurityConfig {
         UserDetails jason = users
                 .username("Jason")
                 .password(encoder.encode("12345"))
-                .roles()
+     gi       .roles()
                 .build();
         return new InMemoryUserDetailsManager(jason);
     }
