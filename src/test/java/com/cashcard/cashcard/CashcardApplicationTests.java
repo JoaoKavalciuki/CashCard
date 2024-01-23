@@ -182,4 +182,14 @@ class CashcardApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	public void notAllowAccessToOtherPersonCashCard(){
+		String url = CASH_CARDS_URL + "/102";
+		ResponseEntity<String> response = restTemplate
+				.withBasicAuth("Jason", "12345")
+				.getForEntity(url, String.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+
 }
