@@ -3,8 +3,7 @@ package com.cashcard.cashcard;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import net.minidev.json.JSONArray;
-import org.apache.logging.log4j.util.Base64Util;
-import org.apache.tomcat.util.codec.binary.Base64;
+
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class CashcardApplicationTests {
 
-	private static final Logger log = LoggerFactory.getLogger(CashcardApplicationTests.class);
+
 
 	@Autowired
 	private TestRestTemplate restTemplate;
@@ -54,8 +53,7 @@ class CashcardApplicationTests {
 		CashCard newCashCard = new CashCard(null, 350.00, "Jason");
 		ResponseEntity<String> response = restTemplate
 				.withBasicAuth("Jason", "12345")
-						.postForEntity(CASH_CARDS_URL, newCashCard, String.class);
-			log.debug(response.toString());
+				.postForEntity(CASH_CARDS_URL, newCashCard, String.class);
 
 			assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
@@ -175,7 +173,7 @@ class CashcardApplicationTests {
 	@Test
 	public void rejectUserWithWrongRole(){
 		ResponseEntity<String> response = restTemplate
-				.withBasicAuth("José", "RBAC")
+				.withBasicAuth("Jose", "RBAC")
 				.getForEntity(CASH_CARDS_URL, String.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);

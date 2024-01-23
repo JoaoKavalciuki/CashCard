@@ -15,7 +15,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
-import javax.swing.*;
 
 @Configuration
 public class SecurityConfig {
@@ -47,7 +46,7 @@ public class SecurityConfig {
                 .build();
 
         UserDetails jose = users
-                .username("José")
+                .username("Jose")
                 .password(passwordEncoder().encode("RBAC"))
                 .roles("NON-CARD-OWNER").build();
         return new InMemoryUserDetailsManager(jason, jose);
