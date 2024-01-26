@@ -1,4 +1,4 @@
 package com.cashcard.cashcard.dto;
 
-public record RequestCashCardDTO(Double amount, String owner) {
+public record RequestCashCardDTO(Double amoun) {
 }
