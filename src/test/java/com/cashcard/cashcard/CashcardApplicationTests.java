@@ -50,7 +50,7 @@ class CashcardApplicationTests {
 	@Test
 	@DirtiesContext
 	public void createNewCashCard(){
-		CashCard newCashCard = new CashCard(null, 350.00, "Jason");
+		CashCard newCashCard = new CashCard(null, 350.00, null);
 		ResponseEntity<String> response = restTemplate
 				.withBasicAuth("Jason", "12345")
 				.postForEntity(CASH_CARDS_URL, newCashCard, String.class);
