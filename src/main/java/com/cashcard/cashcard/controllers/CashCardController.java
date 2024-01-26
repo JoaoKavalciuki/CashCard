@@ -73,6 +73,6 @@ public class CashCardController {
             return ResponseEntity.ok(cashCardDTO);
         }
 
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado");
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
