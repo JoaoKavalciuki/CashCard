@@ -7,6 +7,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.security.Principal;
+
 
 @Entity
 public class CashCard {
@@ -29,9 +31,9 @@ public class CashCard {
        this.owner = owner;
    }
 
-   public CashCard(RequestCashCardDTO cashCardDTO){
+   public CashCard(RequestCashCardDTO cashCardDTO, Principal owner){
        this.amount = cashCardDTO.amount();
-       this.owner = cashCardDTO.owner();
+       this.owner = owner.getName();
    }
 
    public Long getId(){
