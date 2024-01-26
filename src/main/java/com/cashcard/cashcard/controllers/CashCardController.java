@@ -12,12 +12,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.spel.spi.Function;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,26 +44,35 @@ public class CashCardController {
         return  ResponseEntity.created(newCashCardLocation).build();
     }
     @GetMapping
-    public ResponseEntity<List<ResponseCashCardDTO>> findAll(Pageable pageable){
+    public ResponseEntity<List<ResponseCashCardDTO>> findAll(Pageable pageable, Principal owner){
 
-        var results = repository.findAll(
+        Page<CashCard> cashCardsList = repository.findAllByOwner(
+                owner.getName(),
                 PageRequest.of(
                         pageable.getPageNumber(), pageable.getPageSize(),
                         pageable.getSortOr(Sort.by(Sort.Direction.DESC, "amount"))
                 )
         );
 
+     List<ResponseCashCardDTO> cashCardDTOS = cashCardsList
+                .map(cashCard -> new ResponseCashCardDTO(cashCard.getId(), cashCard.getAmount(), cashCard.getOwner()))
+                .stream().toList();
 
-        List<ResponseCashCardDTO> cashCardsList = results.stream().map(cashCard ->
-                new ResponseCashCardDTO(cashCard.getId(), cashCard.getAmount(), cashCard.getOwner())).toList();
 
-        return ResponseEntity.ok(cashCardsList);
+        return ResponseEntity.ok(cashCardDTOS);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CashCard> findById(@PathVariable Long id) {
-        Optional<CashCard> cashCard = repository.findById(id);
+    public ResponseEntity<ResponseCashCardDTO> findById(@PathVariable Long id, Principal owner) {
+        Optional<CashCard> cashCardOptional = Optional.ofNullable(repository.findCashCardByIdAndOwner(id, owner.getName()));
 
-        return cashCard.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        if(cashCardOptional.isPresent()){
+            CashCard cashCard = cashCardOptional.get();
+            ResponseCashCardDTO cashCardDTO =  new ResponseCashCardDTO(cashCard.getId(), cashCard.getAmount(), cashCard.getOwner());
+
+            return ResponseEntity.ok(cashCardDTO);
+        }
+
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado");
     }
 }

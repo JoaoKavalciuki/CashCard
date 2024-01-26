@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CashCardRepository extends JpaRepository<CashCard, Long> {
-    CashCard findCashCardByOwner(Long id, String owner);
+    CashCard findCashCardByIdAndOwner(Long id, String owner);
 
     Page<CashCard> findAllByOwner(String owner, PageRequest pageRequest);
 }
