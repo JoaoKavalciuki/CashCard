@@ -192,4 +192,19 @@ class CashcardApplicationTests {
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 
+
+	@Test
+	public void updateCashCard(){
+		CashCard cashCardUpdate = new CashCard(null, 25.00, null);
+
+		HttpEntity<CashCard> request = new HttpEntity<>(cashCardUpdate);
+
+		String exchangeURL = CASH_CARDS_URL + "/102";
+
+		ResponseEntity<Void> response = restTemplate
+				.withBasicAuth("Jose", "RBAC")
+				.exchange(exchangeURL, HttpMethod.PUT, request, Void.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+	}
 }
