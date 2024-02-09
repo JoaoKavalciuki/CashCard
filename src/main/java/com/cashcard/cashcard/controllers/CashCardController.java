@@ -78,12 +78,18 @@ public class CashCardController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateCashCard(@RequestBody ResponseCashCardDTO updateCashCardDTO, @PathVariable Long id, Principal user){
-        CashCard cashCardToUpdate = repository.findCashCardByIdAndOwner(id, user.getName());
+        Optional<CashCard> cashCardToUpdateOptional = Optional.ofNullable(repository.findCashCardByIdAndOwner(id, user.getName()));
 
-        cashCardToUpdate.setAmount(updateCashCardDTO.amount());
+        if(cashCardToUpdateOptional.isPresent()){
+            CashCard cashCardToUpdate = cashCardToUpdateOptional.get();
 
-        repository.save(cashCardToUpdate);
+            cashCardToUpdate.setAmount(updateCashCardDTO.amount());
 
-        return ResponseEntity.noContent().build();
+            repository.save(cashCardToUpdate);
+
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }
