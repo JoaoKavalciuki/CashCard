@@ -219,4 +219,19 @@ class CashcardApplicationTests {
 		assertThat(id).isEqualTo(101);
 		assertThat(amount).isEqualTo(25.00);
 	}
+
+	@Test
+	public void notUpdateCashCardThatDoesNotExist(){
+		CashCard cashCardUpdate = new CashCard(null, 35.00, null);
+
+		HttpEntity<CashCard> request = new HttpEntity<>(cashCardUpdate);
+
+		String url = CASH_CARDS_URL + "/999";
+
+		ResponseEntity<Void> response = restTemplate
+				.withBasicAuth("Jason", "12345")
+				.exchange(url, HttpMethod.PUT, request, Void.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
 }
