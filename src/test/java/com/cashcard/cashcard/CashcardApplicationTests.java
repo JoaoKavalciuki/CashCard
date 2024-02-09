@@ -5,8 +5,6 @@ import com.jayway.jsonpath.JsonPath;
 import net.minidev.json.JSONArray;
 
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -199,12 +197,26 @@ class CashcardApplicationTests {
 
 		HttpEntity<CashCard> request = new HttpEntity<>(cashCardUpdate);
 
-		String exchangeURL = CASH_CARDS_URL + "/102";
+		String url = CASH_CARDS_URL + "/101";
 
 		ResponseEntity<Void> response = restTemplate
-				.withBasicAuth("Jose", "RBAC")
-				.exchange(exchangeURL, HttpMethod.PUT, request, Void.class);
+				.withBasicAuth("Jason", "12345")
+				.exchange(url, HttpMethod.PUT, request, Void.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+
+		ResponseEntity<String> getCashCardResponse = restTemplate
+				.withBasicAuth("Jason", "12345")
+				.getForEntity(url, String.class);
+
+		assertThat(getCashCardResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext documentContext = JsonPath.parse(getCashCardResponse.getBody());
+
+		Number id = documentContext.read("$.id");
+		Number amount = documentContext.read("$.amount");
+
+		assertThat(id).isEqualTo(101);
+		assertThat(amount).isEqualTo(25.00);
 	}
 }
