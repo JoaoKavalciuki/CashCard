@@ -75,4 +75,15 @@ public class CashCardController {
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateCashCard(@RequestBody ResponseCashCardDTO updateCashCardDTO, @PathVariable Long id, Principal user){
+        CashCard cashCardToUpdate = repository.findCashCardByIdAndOwner(id, user.getName());
+
+        cashCardToUpdate.setAmount(updateCashCardDTO.amount());
+
+        repository.save(cashCardToUpdate);
+
+        return ResponseEntity.noContent().build();
+    }
 }
