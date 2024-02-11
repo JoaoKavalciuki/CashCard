@@ -12,7 +12,7 @@ import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.net.URI;
-import java.nio.charset.Charset;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -164,7 +164,7 @@ class CashcardApplicationTests {
 
 		JSONArray amounts = documentContext.read("$..amount");
 
-		assertThat(amounts).containsExactly(835.00, 550.00, 300.00);
+		assertThat(amounts).containsExactly(550.00, 300.00, 25.00);
 	}
 
 
@@ -234,4 +234,19 @@ class CashcardApplicationTests {
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
+
+	@Test
+	public void notUpdateCashCardOwnedBySomeoneElse(){
+		CashCard joseCashCard = new CashCard(null, 32.00, null);
+
+		HttpEntity<CashCard> request = new HttpEntity<>(joseCashCard);
+
+		String url = CASH_CARDS_URL + "/102";
+		ResponseEntity<Void> response = restTemplate
+				.withBasicAuth("Jason", "12345")
+				.exchange(url, HttpMethod.PUT, request, Void.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+
 }
