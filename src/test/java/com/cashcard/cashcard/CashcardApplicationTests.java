@@ -164,7 +164,7 @@ class CashcardApplicationTests {
 
 		JSONArray amounts = documentContext.read("$..amount");
 
-		assertThat(amounts).containsExactly(550.00, 300.00, 25.00);
+		assertThat(amounts).containsExactly( 835.00,550.00, 300.00);
 	}
 
 
@@ -192,6 +192,7 @@ class CashcardApplicationTests {
 
 
 	@Test
+	@DirtiesContext
 	public void updateCashCard(){
 		CashCard cashCardUpdate = new CashCard(null, 25.00, null);
 
@@ -247,6 +248,17 @@ class CashcardApplicationTests {
 				.exchange(url, HttpMethod.PUT, request, Void.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+
+	@Test
+	public void deleteExistingCashCard(){
+		String url = CASH_CARDS_URL + "/101";
+
+		ResponseEntity<Void> response = restTemplate
+				.withBasicAuth("Jason", "12345")
+				.exchange(url, HttpMethod.DELETE, null, Void.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 	}
 
 }
