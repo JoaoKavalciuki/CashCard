@@ -13,4 +13,6 @@ public interface CashCardRepository extends JpaRepository<CashCard, Long> {
     CashCard findCashCardByIdAndOwner(Long id, String owner);
 
     Page<CashCard> findAllByOwner(String owner, PageRequest pageRequest);
+
+    boolean existsByIdAndOwner(Long id, String owner);
 }
