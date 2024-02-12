@@ -251,14 +251,38 @@ class CashcardApplicationTests {
 	}
 
 	@Test
+	@DirtiesContext
 	public void deleteExistingCashCard(){
-		String url = CASH_CARDS_URL + "/101";
+		String url = CASH_CARDS_URL + "/100";
 
 		ResponseEntity<Void> response = restTemplate
 				.withBasicAuth("Jason", "12345")
 				.exchange(url, HttpMethod.DELETE, null, Void.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+
+		ResponseEntity<String> getResponse = restTemplate
+				.withBasicAuth("Jason", "12345")
+				.getForEntity(url, String.class);
+
+		assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+
+	@Test
+	public void shouldNotAllowDeletationOfOtherUser(){
+
+		String url = CASH_CARDS_URL + "/102";
+		ResponseEntity<Void> deleteResponse = restTemplate
+				.withBasicAuth("Jason", "12345")
+				.exchange(url, HttpMethod.DELETE, null, Void.class);
+
+		assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+
+		ResponseEntity<String> getResponse = restTemplate
+				.withBasicAuth("Henry", "1127")
+				.getForEntity(url, String.class);
+
+		assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
 }
